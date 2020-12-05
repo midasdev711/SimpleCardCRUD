@@ -152,6 +152,8 @@ export default {
     position: absolute;
     top: 10px;
     right: 10px;
+    border: none;
+    font-size: 23px;
   }
   .taskcard__body {
     display: flex;
@@ -180,6 +182,8 @@ export default {
         }
         &:hover .taskcard__body__task__delete {
           opacity: 1;
+          border: none;
+          font-size: 18px;
         }
         &.taskcard__body__task--done {
           font-weight: bold;
@@ -200,6 +204,7 @@ export default {
               bottom: -25px;
               right: 0;
               z-index: 5;
+              border: none;
             }
           }
         }
@@ -210,6 +215,13 @@ export default {
       margin: 0 20px;
       position: absolute;
     }
+  }
+}
+
+@media (max-width: 680px) {
+  .taskcard .taskcard__body .taskcard__body__tasks li .taskcard__body__task__delete {
+    opacity: 1;
+    border: none;
   }
 }
 </style>
