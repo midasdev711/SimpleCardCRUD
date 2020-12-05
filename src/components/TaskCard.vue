@@ -1,7 +1,9 @@
 <template>
   <div class="taskcard">
-    <textarea class="taskcard__title" v-model="content.title"></textarea>
-    <button type="button" class="taskcard__delete" @click="deleteCard">X</button>
+    <textarea ref="title" @keyup="textAreaAdjust" class="taskcard__title" v-model="content.title"></textarea>
+    <button type="button" class="taskcard__delete" @click="deleteCard">
+      &times;
+    </button>
     <div class="taskcard__body">
       <input
         type="range"
@@ -24,13 +26,31 @@
         >
           <template v-if="editIndex == taskIndex">
             <div class="taskcard__body__tasks__input">
-              <input type="text" maxlength="20" v-model="editContent" :key="index + '' + taskIndex" autofocus />
+              <input
+                type="text"
+                maxlength="20"
+                v-model="editContent"
+                :key="index + '' + taskIndex"
+                autofocus
+              />
               <button type="button" @click="saveTask">Save</button>
             </div>
           </template>
           <template v-else>
-            <span>{{ taskIndex + 1 + '.' }}</span>&nbsp;<span class="description" :title="task.description" @click="enableEdit(taskIndex)">{{ task.description }}</span>
-            <button type="button" class="taskcard__body__task__delete" @click="deleteTask(taskIndex)">X</button>
+            <span>{{ taskIndex + 1 + "." }}</span
+            >&nbsp;<span
+              class="description"
+              :title="task.description"
+              @click="enableEdit(taskIndex)"
+              >{{ task.description }}</span
+            >
+            <button
+              type="button"
+              class="taskcard__body__task__delete"
+              @click="deleteTask(taskIndex)"
+            >
+              &times;
+            </button>
           </template>
         </li>
         <li>
@@ -48,16 +68,16 @@ export default {
     content: {
       title: String,
       tasks: Array,
-      status: Number
+      status: Number,
     },
-    index: Number
+    index: Number,
   },
   data: () => {
     return {
       editIndex: null,
       editContent: null,
       isTitleEdit: false,
-    }
+    };
   },
   computed: {
     sliderStyle() {
@@ -70,23 +90,23 @@ export default {
         return this.content.status;
       },
       set(val) {
-        this.$emit('set-status', this.index, val);
+        this.$emit("set-status", this.index, val);
       },
     },
   },
   methods: {
     addNewTask() {
-      this.$emit('new-task', this.index);
+      this.$emit("new-task", this.index);
     },
     deleteCard() {
-      this.$emit('delete-card', this.index);
+      this.$emit("delete-card", this.index);
     },
     saveTask() {
-      this.$emit('update-task', this.index, this.editIndex, this.editContent);
+      this.$emit("update-task", this.index, this.editIndex, this.editContent);
       this.disableEdit();
     },
     deleteTask(taskIndex) {
-      this.$emit('delete-task', this.index, taskIndex);
+      this.$emit("delete-task", this.index, taskIndex);
     },
     enableEdit(taskIndex) {
       if (this.content.status > taskIndex) {
@@ -98,8 +118,12 @@ export default {
     disableEdit() {
       this.editIndex = null;
       this.editContent = null;
-    }
-  }
+    },
+    textAreaAdjust() {
+      this.$refs.title.style.height = "1px";
+      this.$refs.title.style.height = (25 + this.$refs.title.scrollHeight) + "px";
+    },
+  },
 };
 </script>
 
@@ -110,7 +134,8 @@ export default {
   max-width: 260px;
   min-width: 260px;
   margin: 20px;
-  background: #e0e0e0;
+  background: #eee;
+  box-shadow: 0 0 15px #bdbdbd;
   padding: 12px;
   position: relative;
   .taskcard__title {
@@ -120,7 +145,8 @@ export default {
     border: none;
     width: 100%;
     resize: none;
-    margin-top: 20px;
+    margin-top: 25px;
+    overflow: hidden;
   }
   .taskcard__delete {
     position: absolute;
@@ -173,6 +199,7 @@ export default {
               position: absolute;
               bottom: -25px;
               right: 0;
+              z-index: 5;
             }
           }
         }

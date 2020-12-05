@@ -64,7 +64,7 @@ export default {
           status: 0
         },
         {
-          title: "12/03/2020",
+          title: "Contact page",
           tasks: [
             {
               description: "Build contact page"
